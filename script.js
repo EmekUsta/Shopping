@@ -3,9 +3,6 @@ const btnAdd = document.getElementsByClassName("btn-warning");
 const btnCart = document.querySelector(".btn-cart");
 const cartList = document.querySelector(".shopping-cart-list");
 
-
-
-
 class Shopping{
     constructor(title,price,image){
         this.image = image;
@@ -68,7 +65,6 @@ class UI{
     
 }
 
-
 for (let i = 0; i < card.length; i++) {
     btnAdd[i].addEventListener("click", function(e){
         let title = card[i].getElementsByClassName("card-title")[0].textContent;
@@ -87,7 +83,6 @@ for (let i = 0; i < card.length; i++) {
         e.preventDefault();
     })
 }
-
 document.addEventListener("DOMContentLoaded", ()=> {
     let ui = new UI();
 
