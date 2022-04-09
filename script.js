@@ -3,6 +3,8 @@ const btnAdd = document.getElementsByClassName("btn-warning");
 const btnCart = document.querySelector(".btn-cart");
 const cartList = document.querySelector(".shopping-cart-list");
 
+const productList = document.querySelector(".myplist")
+
 class Shopping{
     constructor(title,price,image){
         this.image = image;
@@ -64,6 +66,88 @@ class UI{
     }
     
 }
+
+
+var myData = fetch("./products-list.json")
+.then(response => {
+   return response.json();
+})
+.then(jsondata => {
+    
+
+
+    jsondata.forEach(element => {
+          productList.innerHTML +=`
+          <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card" > 
+            <img src="${element.image}"  alt="product" class="card-img-top img-fluid">
+            <div class="card-body">
+              <h5 class="card-title">${element.title}</h5>
+              <li data-category="${element.category}" style="display: none;" ></li>
+              <p class="cart-text">
+              ${element.description}</p>
+              <div class="d-flex justify-content-between">
+                <a class="btn btn-warning text-dark" href="#">Add to Cart</a>
+                <span class="price badge rounded-pill bg-light text-dark d-flex align-items-center">${element.price} $</span>
+              </div>
+            </div>
+          </div>
+        </div> 
+          `;
+        });
+
+        for (let i = 0; i < card.length; i++) {
+            btnAdd[i].addEventListener("click", function(e){
+                let title = card[i].getElementsByClassName("card-title")[0].textContent;
+                let price = card[i].getElementsByClassName("price")[0].textContent;
+                let image = card[i].getElementsByClassName("card-img-top")[0].src;
+                btnAdd[i].classList.add("disabled");
+                btnAdd[i].textContent = "In Card";
+                let shopping = new Shopping(title,price,image);
+                let ui = new UI();
+        
+                ui.addToCart(shopping);
+                ui.removeCart()
+                ui.cartCount();
+        
+        
+                e.preventDefault();
+            })
+        }
+        document.addEventListener("DOMContentLoaded", ()=> {
+            let ui = new UI();
+        
+            ui.cartToggle();
+        })
+
+        const mySrc = document.getElementById('mysrc')
+        mySrc.addEventListener('input',(e)=>{
+            productList.innerHTML  = ``
+            jsondata.forEach(element => {
+
+                if (element.title.includes(e.srcElement.value)) {
+                    productList.innerHTML +=`
+                <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card" >
+                  <img src="${element.image}"  alt="product" class="card-img-top img-fluid">
+                  <div class="card-body">
+                    <h5 class="card-title">${element.title}</h5>
+                    <p class="cart-text">
+                    ${element.description}</p>
+                    <div class="d-flex justify-content-between">
+                      <a class="btn btn-warning text-dark" href="#">Add to Cart</a>
+                      <span class="price badge rounded-pill bg-light text-dark d-flex align-items-center">${element.price} $</span>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+                `; 
+                }
+               
+              });
+        })
+    
+});
 
 for (let i = 0; i < card.length; i++) {
     btnAdd[i].addEventListener("click", function(e){
